@@ -71,6 +71,7 @@ fi
 echo "Copying files"
 VERSION=`cat VERSION`
 sed 's/^ARPL_VERSION=.*/ARPL_VERSION="'${VERSION}'"/' -i files/board/arpl/overlayfs/opt/arpl/include/consts.sh
+echo "${VERSION}" > files/board/arpl/p1/ARPL-VERSION
 cp -Ru files/* .buildroot/
 
 cd .buildroot
@@ -87,3 +88,19 @@ rm -f *.zip
 zip -9 "arpl-${VERSION}.img.zip" arpl.img
 zip -9 "arpl-${VERSION}.vmdk-dyn.zip" arpl-dyn.vmdk
 zip -9 "arpl-${VERSION}.vmdk-flat.zip" arpl.vmdk arpl-flat.vmdk
+sha256sum update-list.yml > sha256sum
+zip -9j update.zip update-list.yml
+while read F; do
+  if [ -d "${F}" ]; then
+    FTGZ="`basename "${F}"`.tgz"
+    tar czf "${FTGZ}" -C "${F}" .
+    sha256sum "${FTGZ}" >> sha256sum
+    zip -9j update.zip "${FTGZ}"
+    rm "${FTGZ}"
+  else
+    (cd `dirname ${F}` && sha256sum `basename ${F}`) >> sha256sum
+    zip -9j update.zip "${F}"
+  fi
+done < <(yq '.replace | explode(.) | to_entries | map([.key])[] | .[]' update-list.yml)
+zip -9j update.zip sha256sum 
+rm -f sha256sum

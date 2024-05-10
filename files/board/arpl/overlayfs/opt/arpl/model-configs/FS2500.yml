@@ -2,9 +2,12 @@ id: "FS2500"
 synoinfo: &synoinfo
   support_disk_compatibility: "no"
   support_memory_compatibility: "no"
+  support_led_brightness_adjustment: "no"
   rss_server: "https://raw.githubusercontent.com/fbelavenuto/arpl/main/rss.xml"
   rss_server_ssl: "https://raw.githubusercontent.com/fbelavenuto/arpl/main/rss.xml"
   rss_server_v2: "https://raw.githubusercontent.com/fbelavenuto/arpl/main/rss.json"
+  support_syno_hybrid_raid:
+  supportraidgroup:
 cmdline: &cmdline
   intel_iommu: igfx_off
   SMBusHddDynamicPower: 1
@@ -12,6 +15,7 @@ cmdline: &cmdline
   synoboot2:
   syno_ttyS0: "serial,0x3f8"
   syno_ttyS1: "serial,0x2f8"
+  elevator: elevator
 platform: "v1000"
 unique: "synology_v1000_fs2500"
 beta: true
@@ -28,17 +32,16 @@ builds:
     ver: "7.0.1"
     kver: "4.4.180"
     rd-compressed: false
-    efi-bug: no
     cmdline:
       <<: *cmdline
     synoinfo:
       <<: *synoinfo
     pat:
       url: "https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_FS2500_42218.pat"
-      hash: "4d060be8afec548fdb042bc8095524f10ff200033cab74df37ae07f3de5eaa69"
-      ramdisk-hash: "cbe9099c57f23ba53415574b011580218fa55a0bdb83c4e4bba9e27100e5379d"
-      zimage-hash: "f6816165a52b1f53ce44a45878fe06641da34e9478947f826a236c1a6548f8fd"
-      md5-hash: "70550293c612c1fd9a8d1b7485173877"
+      hash: "3fbd5defbc0fef0d152494033f3e817c330525b70e356a9e9acd2b72d9806b59"
+      ramdisk-hash: "8d66ddfa947b38c0e407d4c5efd7558b1a9392e04fd83fe9f162e1aa546f8da8"
+      zimage-hash: "e083a8aec10537582ed0dd6d79bc358d9aff828b3e256996ef1e4f4bf418dd5d"
+      md5-hash: "9562d49a07f5481208b672ff777f3cbf"
     patch:
       - "ramdisk-common-disable-root-pwd.patch"
       - "ramdisk-common-init-script.patch"
@@ -49,7 +52,6 @@ builds:
     ver: "7.1"
     kver: "4.4.180"
     rd-compressed: false
-    efi-bug: no
     cmdline:
       <<: *cmdline
     synoinfo:
@@ -66,33 +68,10 @@ builds:
       - "ramdisk-common-etc-rc.patch"
       - "ramdisk-42661-post-init-script.patch"
       
-  42951:
-    ver: "7.1.1"
-    kver: "4.4.180"
-    rd-compressed: false
-    efi-bug: no
-    rc: true
-    cmdline:
-      <<: *cmdline
-    synoinfo:
-      <<: *synoinfo
-    pat:
-      url: "https://global.download.synology.com/download/DSM/release/7.1.1/42951/DSM_FS2500_42951.pat"
-      hash: "a878c928d7133c3bf3e10e8d3fb43ca7449a57f01d240a3c80de51cdd43af5c3"
-      ramdisk-hash: "a248103b1b47f800753b627394af8768698b74944d156cb6e40c80cd6ba8556f"
-      zimage-hash: "d28951da0eb41286fbe37ffdfc880271787573d68226e5d26321819cf2d2e6e2"
-      md5-hash: "7b48e21c1f2090bb01d5f14a8e16a435"
-    patch:
-      - "ramdisk-common-disable-root-pwd.patch"
-      - "ramdisk-common-init-script.patch"
-      - "ramdisk-common-etc-rc.patch"
-      - "ramdisk-42951-post-init-script.patch"
-
   42962:
     ver: "7.1.1"
     kver: "4.4.180"
     rd-compressed: false
-    efi-bug: no
     cmdline:
       <<: *cmdline
     synoinfo:

@@ -3,17 +3,20 @@ synoinfo: &synoinfo
   support_disk_compatibility: "no"
   support_memory_compatibility: "no"
   buzzeroffen: "0xffff"
+  support_led_brightness_adjustment: "no"
   rss_server: "https://raw.githubusercontent.com/fbelavenuto/arpl/main/rss.xml"
   rss_server_ssl: "https://raw.githubusercontent.com/fbelavenuto/arpl/main/rss.xml"
   rss_server_v2: "https://raw.githubusercontent.com/fbelavenuto/arpl/main/rss.json"
+  support_syno_hybrid_raid:
+  supportraidgroup:
 cmdline: &cmdline
   intel_iommu: "igfx_off"
   HddEnableDynamicPower: 1
   vender_format_version: 2
-  syno_port_thaw: 1
   synoboot2:
   syno_ttyS0: "serial,0x3f8"
   syno_ttyS1: "serial,0x2f8"
+  elevator: elevator
 platform: "geminilake"
 unique: "synology_geminilake_dva1622"
 dom: 2
@@ -32,7 +35,6 @@ builds:
     ver: "7.1.0"
     kver: "4.4.180"
     rd-compressed: false
-    efi-bug: no
     cmdline:
       <<: *cmdline
     synoinfo:
@@ -49,33 +51,10 @@ builds:
       - "ramdisk-common-etc-rc.patch"
       - "ramdisk-42661-post-init-script.patch"
 
-  42951:
-    ver: "7.1.1"
-    kver: "4.4.180"
-    rd-compressed: false
-    efi-bug: no
-    rc: true
-    cmdline:
-      <<: *cmdline
-    synoinfo:
-      <<: *synoinfo
-    pat:
-      url: "https://global.download.synology.com/download/DSM/release/7.1.1/42951/DSM_DVA1622_42951.pat"
-      hash: "2771636333fe1f1f08ad7e80100c0c1224edf1290cea2df848e8d019992b1271"
-      ramdisk-hash: "920336ce890b099b4192cc41e1773e501392b9611cc09c8f96a4e8ed8ddfdfad"
-      zimage-hash: "bbfa903358576e5545c3c3c021c292637360f0925de5e59cb3e785f92db71fd3"
-      md5-hash: "6e119d8eb2c0a175a56b0bbba1f43372"
-    patch:
-      - "ramdisk-common-disable-root-pwd.patch"
-      - "ramdisk-common-init-script.patch"
-      - "ramdisk-common-etc-rc.patch"
-      - "ramdisk-42951-post-init-script.patch"
-
   42962:
     ver: "7.1.1"
     kver: "4.4.180"
     rd-compressed: false
-    efi-bug: no
     cmdline:
       <<: *cmdline
     synoinfo:

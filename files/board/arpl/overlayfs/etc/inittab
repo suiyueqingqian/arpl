@@ -25,11 +25,14 @@ null::sysinit:/bin/ln -sf /proc/self/fd/0 /dev/stdin
 null::sysinit:/bin/ln -sf /proc/self/fd/1 /dev/stdout
 null::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
 ::sysinit:/bin/hostname -F /etc/hostname
+# Reduce kernel logs
+::sysinit:/usr/bin/dmesg -n 1
 # now run any rc scripts
 ::sysinit:/etc/init.d/rcS
 
 # Login in terminals
-::respawn:/sbin/agetty -a root --noclear tty1
+tty1::respawn:/sbin/agetty -a root --noclear tty1
+tty2::askfirst:/sbin/agetty --noclear tty2
 ttyS0::askfirst:/sbin/agetty -a root ttyS0 115200 linux
 ::respawn:/usr/bin/ttyd login -f root
 
@@ -40,3 +43,4 @@ ttyS0::askfirst:/sbin/agetty -a root ttyS0 115200 linux
 ::shutdown:/etc/init.d/rcK
 ::shutdown:/sbin/swapoff -a
 ::shutdown:/bin/umount -a -r
+::shutdown:/usr/sbin/kexec -e -a

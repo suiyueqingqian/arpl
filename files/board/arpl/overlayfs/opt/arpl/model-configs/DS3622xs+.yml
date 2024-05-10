@@ -2,19 +2,21 @@ id: "DS3622xs+"
 synoinfo: &synoinfo
   support_disk_compatibility: "no"
   support_memory_compatibility: "no"
-  supportraidgroup: "no"
   esataportcfg: "0x00"
   support_bde_internal_10g: "no"
   support_oob_ctl: "no"
+  support_led_brightness_adjustment: "no"
   rss_server: "https://raw.githubusercontent.com/fbelavenuto/arpl/main/rss.xml"     # http://update7.synology.com/autoupdate/genRSS.php
   rss_server_ssl: "https://raw.githubusercontent.com/fbelavenuto/arpl/main/rss.xml" # https://update7.synology.com/autoupdate/genRSS.php
   rss_server_v2: "https://raw.githubusercontent.com/fbelavenuto/arpl/main/rss.json" # https://update7.synology.com/autoupdate/v2/getList
+  support_syno_hybrid_raid:
+  supportraidgroup:
 cmdline: &cmdline
   syno_hdd_powerup_seq: 0
   HddHotplug: 0
   vender_format_version: 2
-  syno_port_thaw: 1
   syno_hdd_detect: 0
+  elevator: elevator
 platform: "broadwellnk"
 unique: "synology_broadwellnk_3622xs+"
 dom: 1
@@ -32,17 +34,16 @@ builds:
     ver: "7.0.1"
     kver: "4.4.180"
     rd-compressed: false
-    efi-bug: no
     cmdline:
       <<: *cmdline
     synoinfo:
       <<: *synoinfo
     pat:
       url: "https://global.download.synology.com/download/DSM/release/7.0.1/42218/DSM_DS3622xs%2B_42218.pat"
-      hash: "f38329b8cdc5824a8f01fb1e377d3b1b6bd23da365142a01e2158beff5b8a424"
-      ramdisk-hash: "a95d4ab06189460f3b3d13a33e421887b5f3ea09a10535ae0d4c92beb7ff631d"
-      zimage-hash: "06964b68e5ccdedd4363dff3986f99686d3c9cb5225e8e4c3d840a1d9cd1330b"
-      md5-hash: "bc0235e45a8423f4c46dc0d9699759b5"
+      hash: "a222d37f369d71042057ccb592f40c7c81e9b988a95d69fa166c7c2a611da99c"
+      ramdisk-hash: "11ebadba5d831ad6f31258ab317ed1f7cbfe18243413f9f81291b894b5f7a591"
+      zimage-hash: "d6059bcd7160ed1f775a9323599ac8860b60ada32f0a4f3e5ca166c15a17784e"
+      md5-hash: "b9b452577b38adc82aca42e031be267b"
     patch:
       - "ramdisk-common-disable-root-pwd.patch"
       - "ramdisk-common-init-script.patch"
@@ -54,7 +55,6 @@ builds:
     ver: "7.1.0"
     kver: "4.4.180"
     rd-compressed: false
-    efi-bug: no
     cmdline:
       <<: *cmdline
     synoinfo:
@@ -72,34 +72,10 @@ builds:
       - "ramdisk-42661-post-init-script.patch"
       - "ramdisk-42661-disable-disabled-ports.patch"
 
-  42951:
-    ver: "7.1.1"
-    kver: "4.4.180"
-    rd-compressed: false
-    efi-bug: no
-    rc: true
-    cmdline:
-      <<: *cmdline
-    synoinfo:
-      <<: *synoinfo
-    pat:
-      url: "https://global.download.synology.com/download/DSM/release/7.1.1/42951/DSM_DS3622xs%2B_42951.pat"
-      hash: "11f34ae65b13f7feace40e6a7c2399150ef2b4f4eb3a6dcec0be52fca265f151"
-      ramdisk-hash: "469d76399eb94fee0cb135c6e178cdea797290671f6bf0ae896d7387f66dc952"
-      zimage-hash: "9134fc61aea7f687d62728470b8847e640693c444e0afd130882b728ab553fea"
-      md5-hash: "b34b7b7d21af459ae0ba6ea1f9974de6"
-    patch:
-      - "ramdisk-common-disable-root-pwd.patch"
-      - "ramdisk-common-init-script.patch"
-      - "ramdisk-common-etc-rc.patch"
-      - "ramdisk-42951-post-init-script.patch"
-      - "ramdisk-42661-disable-disabled-ports.patch"
-
   42962:
     ver: "7.1.1"
     kver: "4.4.180"
     rd-compressed: false
-    efi-bug: no
     cmdline:
       <<: *cmdline
     synoinfo:

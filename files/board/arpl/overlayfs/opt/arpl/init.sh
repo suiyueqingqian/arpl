@@ -37,6 +37,7 @@ fsck.ext2 -p ${LOADER_DISK}3 >/dev/null 2>&1 || true
 mkdir -p ${BOOTLOADER_PATH}
 mkdir -p ${SLPART_PATH}
 mkdir -p ${CACHE_PATH}
+mkdir -p ${DSMROOT_PATH}
 # Mount the partitions
 mount ${LOADER_DISK}1 ${BOOTLOADER_PATH} || die "Can't mount ${BOOTLOADER_PATH}"
 mount ${LOADER_DISK}2 ${SLPART_PATH}     || die "Can't mount ${SLPART_PATH}"
@@ -49,7 +50,10 @@ ln -s "${CACHE_PATH}/ssh" "/etc/ssh"
 # Link bash history to cache volume
 rm -rf ~/.bash_history
 ln -s ${CACHE_PATH}/.bash_history ~/.bash_history
-
+touch ~/.bash_history
+if ! grep -q "menu.sh" ~/.bash_history; then
+  echo "menu.sh " >> ~/.bash_history
+fi
 # Check if exists directories into P3 partition, if yes remove and link it
 if [ -d "${CACHE_PATH}/model-configs" ]; then
   rm -rf "${MODEL_CONFIG_PATH}"
@@ -68,12 +72,12 @@ MACF=`echo ${MAC} | sed 's/://g'`
 # If user config file not exists, initialize it
 if [ ! -f "${USER_CONFIG_FILE}" ]; then
   touch "${USER_CONFIG_FILE}"
-  writeConfigKey "lkm" "dev" "${USER_CONFIG_FILE}"
+  writeConfigKey "lkm" "prod" "${USER_CONFIG_FILE}"
   writeConfigKey "directboot" "false" "${USER_CONFIG_FILE}"
   writeConfigKey "model" "" "${USER_CONFIG_FILE}"
   writeConfigKey "build" "" "${USER_CONFIG_FILE}"
   writeConfigKey "sn" "" "${USER_CONFIG_FILE}"
-  writeConfigKey "maxdisks" "" "${USER_CONFIG_FILE}"
+#  writeConfigKey "maxdisks" "" "${USER_CONFIG_FILE}"
   writeConfigKey "layout" "qwerty" "${USER_CONFIG_FILE}"
   writeConfigKey "keymap" "" "${USER_CONFIG_FILE}"
   writeConfigKey "zimage-hash" "" "${USER_CONFIG_FILE}"
@@ -143,6 +147,9 @@ if [ -f /usr/share/keymaps/i386/${LAYOUT}/${KEYMAP}.map.gz ]; then
   zcat /usr/share/keymaps/i386/${LAYOUT}/${KEYMAP}.map.gz | loadkeys
 fi
 
+# Enable Wake on Lan, ignore errors
+ethtool -s eth0 wol g 2>/dev/null
+
 # Decide if boot automatically
 BOOT=1
 if ! loaderIsConfigured; then
@@ -154,13 +161,15 @@ elif grep -q "IWANTTOCHANGETHECONFIG" /proc/cmdline; then
 fi
 
 # If is to boot automatically, do it
-[ ${BOOT} -eq 1 ] && boot.sh
+if [ ${BOOT} -eq 1 ]; then 
+  boot.sh && exit 0
+fi
 
 # Wait for an IP
 COUNT=0
 echo -n "Waiting IP."
 while true; do
-  if [ ${COUNT} -eq 15 ]; then
+  if [ ${COUNT} -eq 30 ]; then
     echo "ERROR"
     break
   fi

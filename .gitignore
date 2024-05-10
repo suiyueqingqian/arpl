@@ -5,7 +5,11 @@ arpl*.vmdk
 *.zip
 .buildroot
 test*.sh
-docker/Dockerfile
-docker/cache
+docker/syno-compiler/Dockerfile
+cache
 *.bak
 *.o
+/files/board/arpl/p3/addons
+/files/board/arpl/p3/lkms
+/files/board/arpl/p3/modules
+/tests
